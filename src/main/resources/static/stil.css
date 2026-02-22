@@ -1,0 +1,67 @@
+/* IMPORTANT: ca width 100% sa nu depaseasca cutia */
+* { box-sizing: border-box; }
+
+body.fundal {
+  font-family: Arial, sans-serif;
+  background: #27F542;
+
+  /* centreaza casuta pe mijloc (ca in poza ta) */
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* cutia alba (ca in HTML-ul tau vechi) */
+.cutie {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+/* dimensiuni ca in vechiul login (width 360px, margin 80px auto) */
+.cutie-login {
+  width: 360px;
+}
+
+/* putin mai lata pentru inregistrare */
+.cutie-inregistrare {
+  width: 420px;
+}
+
+.cutie-panou {
+  width: 520px;
+}
+
+/* mesajele */
+.mesaj-succes {
+  color: green;
+  margin-bottom: 10px;
+}
+
+.mesaj-eroare {
+  color: rgb(156, 17, 17);
+  margin-bottom: 10px;
+}
+
+/* input-uri ca in HTML-ul vechi: width 100%, padding 10, margin 6 0 12 0 */
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0 12px 0;
+}
+
+/* buton ca in vechi: width 100%, padding 10 */
+button {
+  width: 100%;
+  padding: 10px;
+}
+
+/* linia <hr> ca in vechi */
+hr {
+  margin: 16px 0;
+}
+
+.link-jos {
+  margin-top: 4px;
+}

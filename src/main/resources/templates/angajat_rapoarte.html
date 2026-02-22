@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rapoarte</title>
+    <link rel="stylesheet" th:href="@{/stil.css}">
+</head>
+<body class="fundal">
+
+<div class="cutie" style="width: 980px;">
+    <h2>Statistici</h2>
+
+    <div class="mesaj-eroare" th:if="${eroare}" th:text="${eroare}"></div>
+    <div class="mesaj-succes" th:if="${mesaj}" th:text="${mesaj}"></div>
+
+    <p>
+        <a th:href="@{/acasa}">Inapoi la panou</a>
+    </p>
+
+    <hr/>
+
+    <!-- R1 -->
+    <h3>R1: Angajatii cei mai disponibili intr-un departament</h3>
+    <form method="get" th:action="@{/angajat/rapoarte/angajat-disponibil}">
+        <label>Departament</label>
+        <select name="departamentId" required>
+            <option th:each="d : ${departamente}"
+                    th:value="${d.departamentId}"
+                    th:text="${d.denumire}"
+                    th:selected="${departamentSelectat != null and departamentSelectat == d.departamentId}">
+            </option>
+        </select>
+        <button type="submit">Afiseaza</button>
+    </form>
+
+    <table border="1" cellpadding="6" cellspacing="0" style="width:100%; margin-top:10px;"
+           th:if="${rezAngajatDisponibil != null}">
+        <tr>
+            <th>Nume</th>
+            <th>Prenume</th>
+            <th>Departament</th>
+            <th>Comenzi active (Trimisa/In derulare)</th>
+        </tr>
+        <tr th:each="r : ${rezAngajatDisponibil}">
+            <td th:text="${r.nume}"></td>
+            <td th:text="${r.prenume}"></td>
+            <td th:text="${r.departament}"></td>
+            <td th:text="${r.comenziActive}"></td>
+        </tr>
+    </table>
+
+    <hr/>
+
+    <!-- R2 -->
+    <h3>R2: Comenzi fara factura pana la o data</h3>
+    <form method="get" th:action="@{/angajat/rapoarte/comenzi-fara-factura}">
+        <label>Data limita (YYYY-MM-DD)</label>
+        <input type="text" name="dataLimita" th:value="${dataLimita}" placeholder="2026-01-12" required>
+        <button type="submit">Afiseaza</button>
+    </form>
+
+    <table border="1" cellpadding="6" cellspacing="0" style="width:100%; margin-top:10px;"
+           th:if="${rezComenziFaraFactura != null}">
+        <tr>
+            <th>Data primire</th>
+            <th>Client</th>
+            <th>Departament</th>
+            <th>Tip dispozitiv</th>
+            <th>Status</th>
+        </tr>
+        <tr th:each="r : ${rezComenziFaraFactura}">
+            <td th:text="${r.dataPrimire}"></td>
+            <td th:text="${r.client}"></td>
+            <td th:text="${r.departament}"></td>
+            <td th:text="${r.tipDispozitiv}"></td>
+            <td th:text="${r.status}"></td>
+        </tr>
+    </table>
+
+    <hr/>
+
+    <!-- R3 -->
+    <h3>R3: Top clienti dupa total facturat intr-un interval</h3>
+    <form method="get" th:action="@{/angajat/rapoarte/top-clienti}">
+        <label>Data start (YYYY-MM-DD)</label>
+        <input type="text" name="dataStart" th:value="${dataStart}" placeholder="2026-01-01" required>
+
+        <label>Data end (YYYY-MM-DD)</label>
+        <input type="text" name="dataEnd" th:value="${dataEnd}" placeholder="2026-01-31" required>
+
+        <label>Prag minim (ex: 500 sau 500.50)</label>
+        <input type="text" name="pragMinim" th:value="${pragMinim}" placeholder="500" required>
+
+        <button type="submit">Afiseaza</button>
+    </form>
+
+    <table border="1" cellpadding="6" cellspacing="0" style="width:100%; margin-top:10px;"
+           th:if="${rezTopClienti != null}">
+        <tr>
+            <th>Nume</th>
+            <th>Prenume</th>
+            <th>Nr facturi</th>
+            <th>Total facturat</th>
+        </tr>
+        <tr th:each="r : ${rezTopClienti}">
+            <td th:text="${r.nume}"></td>
+            <td th:text="${r.prenume}"></td>
+            <td th:text="${r.nrFacturi}"></td>
+            <td th:text="${r.total}"></td>
+        </tr>
+    </table>
+
+    <hr/>
+</div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Piese</title>
+</head>
+<body style="font-family: Arial; background:#f2f2f2;">
+<div style="width: 980px; margin: 50px auto; background:white; padding:22px; border-radius:12px;">
+
+    <h2 style="margin-top:0;">Stoc piese</h2>
+
+    <div th:if="${mesaj}" style="color: green; margin-bottom: 12px;">
+        <b th:text="${mesaj}"></b>
+    </div>
+    <div th:if="${eroare}" style="color: rgb(156, 17, 17); margin-bottom: 12px;">
+        <b th:text="${eroare}"></b>
+    </div>
+
+    <div style="background:#fafafa; border:1px solid #eee; border-radius:12px; padding:12px; margin-bottom:14px;">
+        <h3 style="margin-top:0;">Alerte stoc (sub prag + consum in ultimele N zile)</h3>
+
+        <form method="get" th:action="@{/angajat/piese/raport}" style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+            <div>
+                <label>Prag stoc</label><br/>
+                <input type="number" name="pragStoc" min="0" th:value="${pragStoc}" style="padding:8px; border-radius:10px; border:1px solid #ddd;">
+            </div>
+            <div>
+                <label>Ultimele N zile</label><br/>
+                <input type="number" name="zile" min="1" th:value="${zile}" style="padding:8px; border-radius:10px; border:1px solid #ddd;">
+            </div>
+            <button type="submit"
+                    style="padding:10px 12px; border:none; border-radius:10px; background:#1976d2; color:white; cursor:pointer;">
+                Calculeaza
+            </button>
+        </form>
+
+        <div th:if="${alerte != null and #lists.isEmpty(alerte)}" style="margin-top:10px;">
+            Nu exista piese sub pragul ales.
+        </div>
+
+        <table th:if="${alerte != null and !#lists.isEmpty(alerte)}"
+               border="1" cellpadding="6" cellspacing="0" style="width:100%; margin-top:10px;">
+            <tr>
+                <th>Piesa</th>
+                <th>Stoc</th>
+                <th>Folosite in ultimele N zile</th>
+            </tr>
+            <tr th:each="r : ${alerte}">
+                <td th:text="${r.denumire}"></td>
+                <td th:text="${r.stoc}"></td>
+                <td th:text="${r.folositeUltimeleZile}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <a th:href="@{/angajat/piese/adauga}"
+       style="display:inline-block; padding:10px 12px; border-radius:10px; background:#1976d2; color:white; text-decoration:none; margin-bottom:12px;">
+        Adauga piesa
+    </a>
+
+    <div th:each="p : ${lista}" style="background:#fafafa; border:1px solid #eee; border-radius:12px; padding:12px; margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; gap:12px;">
+            <div>
+                <div><b th:text="${p.denumire}"></b> (stoc: <span th:text="${p.stoc}"></span>)</div>
+                <div>Cod: <span th:text="${p.cod} ?: '-'"></span></div>
+                <div>Pret: <span th:text="${p.pret}"></span></div>
+                <div>Furnizor: <span th:text="${p.furnizor} ?: '-'"></span></div>
+            </div>
+
+            <div style="display:flex; gap:8px; align-items:center;">
+                <a th:href="@{'/angajat/piese/' + ${p.piesaId} + '/edit'}"
+                   style="padding:8px 10px; border-radius:10px; background:#1976d2; color:white; text-decoration:none;">
+                    Edit
+                </a>
+
+                <form th:action="@{'/angajat/piese/' + ${p.piesaId} + '/sterge'}" method="post"
+                      onsubmit="return confirm('Sunteti sigur ca doriti sa stergeti piesa?');">
+                    <button type="submit"
+                            style="padding:8px 10px; border:none; border-radius:10px; background:#c62828; color:white; cursor:pointer;">
+                        Sterge
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align:center;">
+        <a th:href="@{/angajat/panou}">Inapoi la panou</a>
+    </div>
+</div>
+</body>
+</html>

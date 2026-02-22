@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Editare comanda</title>
+</head>
+<body style="font-family: Arial; background:#f2f2f2;">
+
+<div style="width: 520px; margin: 60px auto; background:white; padding:22px; border-radius:12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+    <h2 style="margin-top:0;">Editare comanda</h2>
+
+    <div th:if="${erori}" style="color: rgb(156, 17, 17); margin-bottom: 12px;">
+        <b>Au aparut urmatoarele erori:</b>
+        <ul style="margin:8px 0 0 18px;">
+            <li th:each="e : ${erori}" th:text="${e}"></li>
+        </ul>
+    </div>
+
+    <div style="margin-bottom:10px; color:#555;">
+        <b>Status:</b> <span th:text="${c.status}"></span>
+    </div>
+
+    <!-- Salvare cu confirmare -->
+    <form th:action="@{'/client/comenzi/' + ${c.comandaId} + '/edit'}" method="post"
+          onsubmit="return confirm('Sunteti sigur ca doriti sa salvati modificarile?');">
+
+        <div style="margin-bottom:10px;">
+            <label><b>Tip dispozitiv</b></label><br/>
+            <input type="text" name="tipDispozitiv" th:value="${c.tipDispozitiv}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label>Producator (optional)</label><br/>
+            <input type="text" name="producator" th:value="${c.producator}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label>Model (optional)</label><br/>
+            <input type="text" name="modelDispozitiv" th:value="${c.model}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label>Serie (optional)</label><br/>
+            <input type="text" name="serie" th:value="${c.serie}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label><b>Defect dispozitiv</b></label><br/>
+            <textarea name="defectDispozitiv" rows="3"
+                      style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;"
+                      th:text="${c.defectDispozitiv}"></textarea>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <label><b>Metoda de plata</b></label><br/>
+            <select name="metodaDePlata" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+                <option value="Card" th:selected="${c.metodaDePlata == 'Card'}">Card</option>
+                <option value="Numerar" th:selected="${c.metodaDePlata == 'Numerar'}">Numerar</option>
+            </select>
+        </div>
+
+        <button type="submit"
+                style="width:100%; padding:10px; border:none; border-radius:10px; background:#1976d2; color:white; cursor:pointer;">
+            Salveaza modificari
+        </button>
+    </form>
+
+    <!-- Buton stergere direct din pagina de editare -->
+    <form th:action="@{'/client/comenzi/' + ${c.comandaId} + '/sterge'}" method="post"
+          onsubmit="return confirm('Sunteti sigur ca doriti sa stergeti comanda?');"
+          style="margin-top:10px;">
+        <button type="submit"
+                style="width:100%; padding:10px; border:none; border-radius:10px; background:#c62828; color:white; cursor:pointer;">
+            Sterge comanda
+        </button>
+    </form>
+
+    <div style="margin-top:14px; text-align:center;">
+        <a th:href="@{/client/comenzile-mele}" style="text-decoration:none;">Inapoi la comenzi</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalii comanda</title>
+</head>
+<body style="font-family: Arial; background:#f2f2f2;">
+
+<div style="width: 980px; margin: 40px auto; background:white; padding:22px; border-radius:12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+    <h2 style="margin-top:0;">Detalii comanda</h2>
+
+    <div th:if="${mesaj}" style="color: green; margin-bottom: 12px;">
+        <b th:text="${mesaj}"></b>
+    </div>
+    <div th:if="${eroare}" style="color: rgb(156, 17, 17); margin-bottom: 12px;">
+        <b th:text="${eroare}"></b>
+    </div>
+
+    <div style="background:#fafafa; border:1px solid #eee; border-radius:12px; padding:14px; margin-bottom:14px;">
+        <div><b>Client:</b> <span th:text="${c.clientNume}"></span> <span th:text="${c.clientPrenume}"></span></div>
+        <div><b>Data primire:</b> <span th:text="${c.dataPrimire}"></span></div>
+        <div><b>Status:</b> <span th:text="${c.status}"></span></div>
+        <div><b>Metoda plata:</b> <span th:text="${c.metodaDePlata}"></span></div>
+        <hr style="border:none; border-top:1px solid #eee; margin: 12px 0;">
+        <div><b>Tip dispozitiv:</b> <span th:text="${c.tipDispozitiv}"></span></div>
+        <div><b>Producator:</b> <span th:text="${c.producator} ?: '-'"></span></div>
+        <div><b>Model:</b> <span th:text="${c.model} ?: '-'"></span></div>
+        <div><b>Serie:</b> <span th:text="${c.serie} ?: '-'"></span></div>
+        <div><b>Defect:</b> <span th:text="${c.defectDispozitiv}"></span></div>
+    </div>
+
+    <!-- START LUCRU -->
+    <form th:if="${c.esteTrimisa()}" th:action="@{'/angajat/comenzi/' + ${c.comandaId} + '/start'}" method="post"
+          onsubmit="return confirm('Sunteti sigur ca doriti sa setati statusul In derulare?');"
+          style="margin-bottom:14px;">
+        <button type="submit"
+                style="padding:10px 14px; border:none; border-radius:10px; background:#1976d2; color:white; cursor:pointer;">
+            Start (setare In derulare)
+        </button>
+    </form>
+
+    <div style="display:flex; gap:16px; align-items:flex-start;">
+        <!-- PIESE -->
+        <div style="flex:1; background:#fafafa; border:1px solid #eee; border-radius:12px; padding:14px;">
+            <h3 style="margin-top:0;">Piese folosite</h3>
+
+            <div style="margin-bottom:10px;">
+                <b>Curent:</b>
+                <ul>
+                    <li th:each="p : ${pieseFolosite}" th:text="${p}"></li>
+                </ul>
+            </div>
+
+            <form th:if="${!c.esteFinalizata()}" th:action="@{'/angajat/comenzi/' + ${c.comandaId} + '/piese'}" method="post"
+                  onsubmit="return confirm('Sunteti sigur ca doriti sa adaugati piesa si sa scadeti stocul?');">
+                <div style="margin-bottom:8px;">
+                    <label><b>Piesa</b></label><br/>
+                    <select name="piesaId" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+                        <option th:each="p : ${catalogPiese}" th:value="${p.piesaId}"
+                                th:text="${p.denumire + ' (stoc=' + p.stoc + ')'}"></option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom:10px;">
+                    <label><b>Cantitate</b></label><br/>
+                    <input type="number" name="cantitate" value="1" min="1"
+                           style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+                </div>
+
+                <button type="submit"
+                        style="width:100%; padding:10px; border:none; border-radius:10px; background:#1976d2; color:white; cursor:pointer;">
+                    Adauga piesa (scade stoc)
+                </button>
+            </form>
+
+            <div th:if="${c.esteFinalizata()}" style="color:#666;">
+                Comanda finalizata - nu se mai pot modifica piese.
+            </div>
+        </div>
+    </div>
+
+    <!-- FACTURA -->
+    <div style="margin-top:16px; background:#fafafa; border:1px solid #eee; border-radius:12px; padding:14px;">
+        <h3 style="margin-top:0;">Factura</h3>
+
+        <div th:if="${facturaExista}" style="color:green;">
+            Factura a fost deja generata pentru aceasta comanda.
+        </div>
+
+        <form th:action="@{'/angajat/comenzi/' + ${c.comandaId} + '/factura'}" method="post">
+
+            <h3>Servicii executate</h3>
+            <div th:each="s : ${catalogServicii}">
+                <label style="display:block; margin:6px 0;">
+                    <input type="checkbox" name="serviciuIds" th:value="${s.serviciuId}">
+                    <span th:text="${s.denumire}"></span>
+                    (<span th:text="${s.pretStandard}"></span>)
+                </label>
+            </div>
+
+            <h3>Factura</h3>
+            <label>Serie</label>
+            <input type="text" name="serie">
+
+            <label>Numar</label>
+            <input type="number" name="numar">
+
+            <label>Pret factura</label>
+            <input type="text" name="pretFactura" placeholder="ex: 250.50">
+
+            <button type="submit">Genereaza factura + Finalizeaza comanda</button>
+        </form>
+
+    </div>
+
+    <div style="margin-top:14px; text-align:center;">
+        <a th:href="@{/angajat/comenzile-mele}" style="text-decoration:none;">Inapoi la comenzi</a>
+    </div>
+</div>
+
+</body>
+</html>

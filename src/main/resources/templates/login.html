@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Service Dispozitive</title>
+    <link rel="stylesheet" th:href="@{/stil.css}">
+</head>
+<body class="fundal">
+
+<div class="cutie cutie-login">
+    <h2>Autentificare</h2>
+
+    <div th:if="${param.inregistrat}" class="mesaj-succes">
+        Cont creat cu succes. Te poti loga acum.
+    </div>
+    <div th:if="${param.error}" class="mesaj-eroare">
+        Date incorecte (nume utilizator sau parola).
+    </div>
+    <div th:if="${param.logout}" class="mesaj-succes">
+        Te-ai delogat.
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+        <label>Nume utilizator</label><br>
+        <input type="text" name="username" placeholder="ex: alex"><br>
+
+        <label>Parola</label><br>
+        <input type="password" name="password" placeholder="parola"><br>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <hr>
+
+    <div class="link-jos">
+        Nu ai cont? <a th:href="@{/inregistrare}">Creeaza cont</a>
+    </div>
+</div>
+
+</body>
+</html>

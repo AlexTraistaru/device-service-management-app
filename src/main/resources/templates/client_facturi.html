@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ro">
+<head><meta charset="UTF-8"><title>Facturile mele</title></head>
+<body style="font-family: Arial; background:#f2f2f2;">
+<div style="width: 980px; margin: 50px auto; background:white; padding:22px; border-radius:12px;">
+
+    <h2 style="margin-top:0;">Facturile mele</h2>
+
+    <div th:if="${#lists.isEmpty(lista)}" style="color:#555;">
+        Nu ai facturi emise.
+    </div>
+
+    <div th:each="f : ${lista}" style="background:#fafafa; border:1px solid #eee; border-radius:12px; padding:14px; margin-bottom:12px;">
+        <div><b>Serie:</b> <span th:text="${f['Serie']}"></span></div>
+        <div><b>Numar:</b> <span th:text="${f['Numar']}"></span></div>
+        <div><b>Data:</b> <span th:text="${f['DataEmitere']}"></span></div>
+        <div><b>Pret:</b> <span th:text="${f['PretFactura']}"></span></div>
+        <div><b>Metoda plata:</b> <span th:text="${f['MetodaDePlata']}"></span></div>
+
+        <hr style="border:none; border-top:1px solid #eee; margin: 12px 0;">
+        <div style="color:#444;">
+            <b>Dispozitiv:</b>
+            <span th:text="${f['TipDispozitiv']}"></span>
+            <span th:text="${f['Producator']} ?: ''"></span>
+            <span th:text="${f['Model']} ?: ''"></span>
+            (serie: <span th:text="${f['SerieDispozitiv']} ?: '-'"></span>)
+        </div>
+    </div>
+
+    <div style="text-align:center;">
+        <a th:href="@{/client/panou}">Inapoi la panou</a>
+    </div>
+
+</div>
+</body>
+</html>

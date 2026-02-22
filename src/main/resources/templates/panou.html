@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Panou</title>
+    <link rel="stylesheet" th:href="@{/stil.css}">
+</head>
+<body class="fundal">
+
+<div class="cutie cutie-panou">
+    <h2>Bine ai venit, <span th:text="${nume}">utilizator</span>!</h2>
+
+    <p th:if="${tipInterfata == 'ANGAJAT'}">
+        <a th:href="@{/angajat/comenzile-mele}">Comenzile mele</a>
+        <a th:href="@{/angajat/comenzi-toate}">Comenzi totale</a>
+        <a th:href="@{/angajat/servicii}">Servicii</a>
+        <a th:href="@{/angajat/piese}">Stoc piese</a>
+        <a th:href="@{/angajat/detalii}">Detalii angajat</a>
+        <a th:href="@{/angajat/rapoarte}">Rapoarte</a>
+        <a th:href="@{/angajat/grafic}">Grafic</a>
+    </p>
+
+    <p th:if="${tipInterfata == 'CLIENT'}">
+        <a th:href="@{/client/date-personale}">Date personale</a>
+        <a th:href="@{/client/creeaza-comanda}">Creeaza comanda</a>
+        <a th:href="@{/client/comenzile-mele}">Comenzile mele</a>
+        <a th:href="@{/client/facturile-mele}">Facturile mele</a>
+    </p>
+
+    <form th:action="@{/logout}" method="post">
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button type="submit">Logout</button>
+    </form>
+</div>
+
+</body>
+</html>

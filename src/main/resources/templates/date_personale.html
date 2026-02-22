@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Date personale</title>
+</head>
+<body style="font-family: Arial; background:#f2f2f2;">
+
+<div style="width: 520px; margin: 60px auto; background:white; padding:22px; border-radius:12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+    <h2 style="margin-top:0;">Date personale</h2>
+
+    <!-- Afisam toate erorile simultan -->
+    <div th:if="${erori}" style="color: rgb(156, 17, 17); margin-bottom: 12px;">
+        <ul>
+            <li th:each="e : ${erori}" th:text="${e}"></li>
+        </ul>
+    </div>
+
+    <div th:if="${mesajSucces}" style="color: green; margin-bottom: 12px;">
+        <b th:text="${mesajSucces}"></b>
+    </div>
+
+    <!-- Confirmare la salvare (cerinta ta) -->
+    <form th:action="@{/client/date-personale}" method="post"
+          onsubmit="return confirm('Sunteti sigur ca doriti sa inregistrati noile date personale?');">
+
+        <!-- CAMPURI OBLIGATORII -->
+        <div style="margin-bottom:10px;">
+            <label><b>Nume (obligatoriu)</b></label><br/>
+            <input type="text" name="nume" th:value="${client.nume}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label><b>Prenume (obligatoriu)</b></label><br/>
+            <input type="text" name="prenume" th:value="${client.prenume}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:14px;">
+            <label><b>Telefon (obligatoriu)</b></label><br/>
+            <input type="text" name="telefon" th:value="${client.telefon}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <hr style="border:none; border-top:1px solid #eee; margin: 16px 0;">
+
+        <!-- CAMPURI OPTIONALE -->
+        <div style="margin-bottom:10px;">
+            <label>Email (optional)</label><br/>
+            <input type="text" name="email" th:value="${client.email}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label>CNP (optional)</label><br/>
+            <input type="text" name="cnp" th:value="${client.cnp}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label>Strada (optional)</label><br/>
+            <input type="text" name="strada" th:value="${client.strada}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="display:flex; gap:10px; margin-bottom:10px;">
+            <div style="flex:1;">
+                <label>Numar (optional)</label><br/>
+                <input type="text" name="numar" th:value="${client.numar}"
+                       style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+            </div>
+            <div style="flex:1;">
+                <label>Oras (optional)</label><br/>
+                <input type="text" name="oras" th:value="${client.oras}"
+                       style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+            </div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <label>Judet (optional)</label><br/>
+            <input type="text" name="judet" th:value="${client.judet}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <button type="submit"
+                style="width:100%; padding:10px; border:none; border-radius:10px; background:#1976d2; color:white; font-size:15px; cursor:pointer;">
+            Salveaza
+        </button>
+    </form>
+
+    <div style="margin-top:14px; text-align:center;">
+        <a th:href="@{/client/panou}" style="text-decoration:none;">Inapoi la panou</a>
+    </div>
+</div>
+
+</body>
+</html>

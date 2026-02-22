@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Inregistrare</title>
+</head>
+<body style="font-family: Arial; background:#f2f2f2;">
+
+<div style="width: 360px; margin: 80px auto; background:white; padding:20px; border-radius:12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+    <h2>Inregistrare</h2>
+
+    <!-- Afisam toate erorile simultan -->
+    <div th:if="${erori}" style="color: rgb(156, 17, 17); margin-bottom: 10px;">
+        <ul>
+            <li th:each="e : ${erori}" th:text="${e}"></li>
+        </ul>
+    </div>
+
+    <form th:action="@{/inregistrare}" method="post">
+        <div style="margin-bottom:10px;">
+            <label>Nume utilizator</label><br/>
+            <input type="text" name="numeUtilizator" th:value="${numeUtilizator}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label>Parola</label><br/>
+            <input type="password" name="parola"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label>Email (optional)</label><br/>
+            <input type="text" name="email" th:value="${email}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:14px;">
+            <label>Rol</label><br/>
+            <select name="rol" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+                <option value="CLIENT" th:selected="${rol == 'CLIENT'}">CLIENT</option>
+                <option value="ANGAJAT" th:selected="${rol == 'ANGAJAT'}">ANGAJAT</option>
+            </select>
+        </div>
+
+        <button type="submit"
+                style="width:100%; padding:10px; border:none; border-radius:10px; background:#1976d2; color:white; font-size:15px; cursor:pointer;">
+            Creeaza cont
+        </button>
+    </form>
+
+    <div style="margin-top:14px; text-align:center;">
+        <a th:href="@{/login}" style="text-decoration:none;">Inapoi la login</a>
+    </div>
+</div>
+
+</body>
+</html>

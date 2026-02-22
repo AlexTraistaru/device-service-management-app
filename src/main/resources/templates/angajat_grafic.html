@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Grafic - Top clienti (max factura)</title>
+    <link rel="stylesheet" th:href="@{/stil.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="card">
+
+    <h2>Grafic: Top clienti dupa cea mai scumpa factura</h2>
+
+    <p style="color:#666;">
+    </p>
+
+    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+        <div>
+            <label>From</label><br>
+            <input id="from" type="date">
+        </div>
+        <div>
+            <label>To</label><br>
+            <input id="to" type="date">
+        </div>
+        <div>
+            <label>Top</label><br>
+            <input id="top" type="number" min="1" max="20" value="5" style="width:80px;">
+        </div>
+
+        <button onclick="incarca()">Incarca grafic</button>
+        <a th:href="@{/acasa}" style="margin-left:auto;">Inapoi</a>
+    </div>
+
+    <hr>
+
+    <canvas id="chart" height="120"></canvas>
+
+    <h3>Rezultat (si tabel)</h3>
+    <table style="width:100%; border-collapse: collapse;">
+        <thead>
+        <tr>
+            <th style="text-align:left; padding:6px; border-bottom:1px solid #ddd;">Client</th>
+            <th style="text-align:left; padding:6px; border-bottom:1px solid #ddd;">Max pret factura</th>
+            <th style="text-align:left; padding:6px; border-bottom:1px solid #ddd;">Nr facturi</th>
+        </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+
+</div>
+
+<script>
+    let chartObj = null;
+
+    function aziIso() {
+        const d = new Date();
+        return d.toISOString().slice(0, 10);
+    }
+
+    // default: ultimele 30 zile (simplu)
+    (function init() {
+        const to = aziIso();
+        const d = new Date();
+        d.setDate(d.getDate() - 30);
+        const from = d.toISOString().slice(0, 10);
+
+        document.getElementById("from").value = from;
+        document.getElementById("to").value = to;
+
+        incarca();
+    })();
+
+    async function incarca() {
+        const from = document.getElementById("from").value;
+        const to = document.getElementById("to").value;
+        const top = document.getElementById("top").value;
+
+        const url = `/api/rapoarte/top-clienti-max?from=${from}&to=${to}&top=${top}`;
+
+        const resp = await fetch(url);
+        if (!resp.ok) {
+            alert("Eroare la incarcare date (verifica login ca ANGAJAT).");
+            return;
+        }
+
+        const data = await resp.json();
+
+        // update tabel
+        const tb = document.getElementById("tbody");
+        tb.innerHTML = "";
+        data.forEach(x => {
+            const tr = document.createElement("tr");
+            tr.innerHTML =
+                `<td style="padding:6px; border-bottom:1px solid #eee;">${x.clientNumeComplet}</td>
+                 <td style="padding:6px; border-bottom:1px solid #eee;">${x.maxPretFactura}</td>
+                 <td style="padding:6px; border-bottom:1px solid #eee;">${x.numarFacturi}</td>`;
+            tb.appendChild(tr);
+        });
+
+        // chart labels + values
+        const labels = data.map(x => x.clientNumeComplet);
+        const values = data.map(x => Number(x.maxPretFactura));
+
+        const ctx = document.getElementById('chart');
+
+        if (chartObj) chartObj.destroy();
+
+        chartObj = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Max pret factura (RON)',
+                    data: values
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true }
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

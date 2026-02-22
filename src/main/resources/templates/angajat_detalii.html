@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ro">
+<head><meta charset="UTF-8"><title>Detalii angajat</title></head>
+<body style="font-family: Arial; background:#f2f2f2;">
+<div style="width: 520px; margin: 60px auto; background:white; padding:22px; border-radius:12px;">
+
+    <h2 style="margin-top:0;">Detalii angajat</h2>
+
+    <div th:if="${mesaj}" style="color: green; margin-bottom: 12px;"><b th:text="${mesaj}"></b></div>
+    <div th:if="${eroare}" style="color: rgb(156, 17, 17); margin-bottom: 12px;"><b th:text="${eroare}"></b></div>
+
+    <form th:action="@{/angajat/detalii}" method="post"
+          onsubmit="return confirm('Sunteti sigur ca doriti sa salvati noile date?');">
+
+        <div style="margin-bottom:10px;">
+            <label><b>Nume</b></label><br/>
+            <input type="text" name="nume" th:value="${det['Nume']}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label><b>Prenume</b></label><br/>
+            <input type="text" name="prenume" th:value="${det['Prenume']}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label>Email (optional)</label><br/>
+            <input type="text" name="email" th:value="${det['Email']}"
+                   style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <label><b>Departament</b></label><br/>
+            <select name="departamentId" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+                <option th:each="d : ${departamente}" th:value="${d.departamentId}"
+                        th:selected="${d.departamentId == det['DepartamentID']}"
+                        th:text="${d.denumire}"></option>
+            </select>
+        </div>
+
+        <button type="submit"
+                style="width:100%; padding:10px; border:none; border-radius:10px; background:#1976d2; color:white; cursor:pointer;">
+            Salveaza
+        </button>
+    </form>
+
+    <div style="margin-top:12px; text-align:center;">
+        <a th:href="@{/angajat/panou}">Inapoi la panou</a>
+    </div>
+
+</div>
+</body>
+</html>

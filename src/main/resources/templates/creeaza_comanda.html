@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Creeaza comanda</title>
+</head>
+<body style="font-family: Arial; background:#f2f2f2;">
+
+<div style="width: 520px; margin: 60px auto; background:white; padding:22px; border-radius:12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+    <h2 style="margin-top:0;">Creeaza comanda</h2>
+
+    <div th:if="${erori}" style="color: rgb(156, 17, 17); margin-bottom: 12px;">
+        <ul>
+            <li th:each="e : ${erori}" th:text="${e}"></li>
+        </ul>
+    </div>
+
+    <form th:action="@{/client/creeaza-comanda}" method="post"
+          onsubmit="return confirm('Sunteti sigur ca doriti sa trimiteti comanda?');">
+
+        <div style="margin-bottom:10px;">
+            <label><b>Tip dispozitiv (obligatoriu)</b></label><br/>
+            <input type="text" name="tipDispozitiv" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label><b>Categorie dispozitiv</b></label><br/>
+            <select name="departamentId" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+                <option th:each="d : ${departamente}" th:value="${d.departamentId}" th:text="${d.denumire}"></option>
+            </select>
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label><b>Producator</b></label><br/>
+            <input type="text" name="producator" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label><b>Model</b></label><br/>
+            <input type="text" name="modelDispozitiv" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label><b>Serie</b></label><br/>
+            <input type="text" name="serie" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label><b>Defect dispozitiv (obligatoriu)</b></label><br/>
+            <textarea name="defectDispozitiv" rows="3" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;"></textarea>
+        </div>
+
+        <div style="margin-bottom:16px;">
+            <label><b>Metoda de plata</b></label><br/>
+            <select name="metodaDePlata" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+                <option value="Card" th:selected="${metodaDefault == 'Card'}">Card</option>
+                <option value="Numerar" th:selected="${metodaDefault == 'Numerar'}">Numerar</option>
+            </select>
+        </div>
+
+        <button type="submit"
+                style="width:100%; padding:10px; border:none; border-radius:10px; background:#1976d2; color:white; font-size:15px; cursor:pointer;">
+            Trimite comanda
+        </button>
+    </form>
+
+    <div style="margin-top:14px; text-align:center;">
+        <a th:href="@{/client/panou}" style="text-decoration:none;">Inapoi la panou</a>
+    </div>
+</div>
+
+</body>
+</html>

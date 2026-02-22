@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ro">
+<head><meta charset="UTF-8"><title>Servicii</title></head>
+<body style="font-family: Arial; background:#f2f2f2;">
+<div style="width: 900px; margin: 50px auto; background:white; padding:22px; border-radius:12px;">
+
+    <h2 style="margin-top:0;">Catalog servicii (universal)</h2>
+
+    <div th:if="${mesaj}" style="color: green; margin-bottom: 12px;"><b th:text="${mesaj}"></b></div>
+    <div th:if="${eroare}" style="color: rgb(156, 17, 17); margin-bottom: 12px;"><b th:text="${eroare}"></b></div>
+
+    <a th:href="@{/angajat/servicii/adauga}"
+       style="display:inline-block; padding:10px 12px; border-radius:10px; background:#1976d2; color:white; text-decoration:none; margin-bottom:12px;">
+        Adauga serviciu
+    </a>
+
+    <div th:each="s : ${lista}" style="background:#fafafa; border:1px solid #eee; border-radius:12px; padding:12px; margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <b th:text="${s.denumire}"></b>
+                - <span th:text="${s.pretStandard}"></span>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <a th:href="@{'/angajat/servicii/' + ${s.serviciuId} + '/edit'}"
+                   style="padding:8px 10px; border-radius:10px; background:#1976d2; color:white; text-decoration:none;">
+                    Edit
+                </a>
+
+                <form th:action="@{'/angajat/servicii/' + ${s.serviciuId} + '/sterge'}" method="post"
+                      onsubmit="return confirm('Sunteti sigur ca doriti sa stergeti serviciul?');">
+                    <button type="submit"
+                            style="padding:8px 10px; border:none; border-radius:10px; background:#c62828; color:white; cursor:pointer;">
+                        Sterge
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align:center;">
+        <a th:href="@{/angajat/panou}">Inapoi la panou</a>
+    </div>
+
+</div>
+</body>
+</html>
